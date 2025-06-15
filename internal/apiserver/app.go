@@ -8,10 +8,10 @@ type App struct {
 	baseName    string
 	name        string
 	description string
-	//options     CliOptions
-	//funFunc     RunFunc
-	silence   bool
-	noVersion bool
+	options     CliOptions
+	funFunc     RunFunc
+	silence     bool
+	noVersion   bool
 	//commands    []*commands
 	args cobra.PositionalArgs
 	cmd  *cobra.Command
@@ -20,3 +20,6 @@ type App struct {
 // Option defines optional parameters for initializing the application
 // structure.
 type Option func(*App)
+
+// RunFunc defines the application`s startup callback function.
+type RunFunc func(basename string) error
