@@ -15,7 +15,7 @@ type ServiceProvider interface {
 	//IsDefer decides whether to instantiate the service during registration,if it is not instantiated during registration,
 	// it will be instantialed during the first make operation
 	IsDefer() bool
-	//  define the parameters passed 通 NewInstance，which can be customized multiple times,it is recommemed to
+	//  define the parameters passed NewInstance，which can be customized multiple times,it is recommemed to
 	// use container as the firt parameter
 	Params(Container) []interface{}
 	// Name represents the credentials of this service provider

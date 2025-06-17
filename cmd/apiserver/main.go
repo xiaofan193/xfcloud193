@@ -1,6 +1,13 @@
 package main
 
+import (
+	"github.com/xiaofan193/xifancloud193/internal/framework"
+	"github.com/xiaofan193/xifancloud193/internal/framework/provider/app"
+)
+
 func main() {
-	// r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	// fmt.Println(r.Intn(100)) // 生成 0- 100内整数
+	// initiallization server container
+	container := framework.NewXfContainer()
+	//bind App service provider
+	_ = container.Bind(&app.XfAppProvider{})
 }

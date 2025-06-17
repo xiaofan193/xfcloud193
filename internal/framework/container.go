@@ -75,9 +75,80 @@ func (x *XfContainer) Bind(provider ServiceProvider) error {
 }
 
 func (x *XfContainer) IsBind(key string) bool {
-	return true
+	return x.findServiceProvider(key) != nil
+}
+func (x *XfContainer) findServiceProvider(key string) ServiceProvider {
+
+	x.Lock.RLock()
+	defer x.Lock.Unlock()
+	if sp, ok := x.Providers[key]; ok {
+		return sp
+	}
+	return nil
 }
 
 func (x *XfContainer) Make(key string) (interface{}, error) {
-	return nil, nil
+	return x.make(key, nil, false)
+}
+
+func (x *XfContainer) MustMake(key string) interface{} {
+	serv, err := x.make(key, nil, false)
+	if err != nil {
+		panic("container not contain key" + key)
+	}
+	return serv
+}
+func (x *XfContainer) MakeNew(key string, params []interface{}) (interface{}, error) {
+	return x.make(key, params, true)
+}
+
+func (x *XfContainer) newInstance(sp ServiceProvider, params []interface{}) (interface{}, error) {
+	if err := sp.Boot(x); err != nil {
+		return nil, err
+	}
+	if params == nil {
+		params = sp.Params(x)
+	}
+	method := sp.Register(x)
+	ins, err := method(params...)
+	if err != nil {
+		return nil, err
+	}
+	return ins, err
+}
+
+// the real instantiate a service
+func (x *XfContainer) make(key string, params []interface{}, forceNew bool) (interface{}, error) {
+	x.Lock.RLock()
+	defer x.Lock.RUnlock()
+	sp := x.findServiceProvider(key)
+	if sp == nil {
+		return nil, fmt.Errorf("container %s have not register", key)
+	}
+
+	if forceNew {
+		return x.newInstance(sp, params)
+	}
+	// use the instance in container
+	if ins, ok := x.Instances[key]; ok {
+		return ins, nil
+	}
+	// if container is not instantiate, instantiate onece again
+	inst, err := x.newInstance(sp, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	x.Instances[key] = inst
+	return inst, nil
+}
+
+// List the string credentials of all service providers int the container
+func (x *XfContainer) NameList() []string {
+	ret := []string{}
+	for _, provider := range x.Providers {
+		name := provider.Name()
+		ret = append(ret, name)
+	}
+	return ret
 }
