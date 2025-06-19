@@ -8,7 +8,7 @@ type XfAppProvider struct {
 
 // todo Register XfApp method
 func (x *XfAppProvider) Register(container framework.Container) framework.NewInstance {
-	return nil
+	return NewXfApp
 }
 
 // calling boot
