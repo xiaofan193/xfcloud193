@@ -10,4 +10,6 @@ func main() {
 	container := framework.NewXfContainer()
 	//bind App service provider
 	_ = container.Bind(&app.XfAppProvider{})
+	//  The servie providers that need to be bound for subsequent initialization
+
 }

@@ -1,6 +1,9 @@
 package app
 
-import "github.com/xiaofan193/xifancloud193/internal/framework"
+import (
+	"github.com/xiaofan193/xifancloud193/internal/framework"
+	"github.com/xiaofan193/xifancloud193/internal/framework/contract"
+)
 
 type XfAppProvider struct {
 	BaseFolder string
@@ -28,5 +31,5 @@ func (x *XfAppProvider) Params(container framework.Container) []interface{} {
 
 // todo Name get str credentials
 func (x *XfAppProvider) Name() string {
-	return ""
+	return contract.KernelKey
 }
