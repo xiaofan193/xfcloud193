@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-const KernelKey = "hade:kernel"
+const KernelKey = "xf:kernel"
 
 // Kernel interface provider the core of framework
 type Kernel interface {

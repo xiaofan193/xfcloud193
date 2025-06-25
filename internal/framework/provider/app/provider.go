@@ -9,7 +9,7 @@ type XfAppProvider struct {
 	BaseFolder string
 }
 
-// todo Register XfApp method
+// Register XfApp method
 func (x *XfAppProvider) Register(container framework.Container) framework.NewInstance {
 	return NewXfApp
 }
@@ -29,7 +29,7 @@ func (x *XfAppProvider) Params(container framework.Container) []interface{} {
 	return []interface{}{container, x.BaseFolder}
 }
 
-// todo Name get str credentials
+// Name get str credentials
 func (x *XfAppProvider) Name() string {
-	return contract.KernelKey
+	return contract.AppKey
 }

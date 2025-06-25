@@ -1,7 +1,6 @@
 package kernel
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/xiaofan193/xifancloud193/internal/framework"
 	"github.com/xiaofan193/xifancloud193/internal/framework/contract"
 	"google.golang.org/grpc"
@@ -9,7 +8,7 @@ import (
 
 // provider web engine
 type XfKernelProvider struct {
-	HttpEngine *gin.Engine
+	HttpEngine *framework.GinEngine
 	GrpcEngine *grpc.Server
 }
 
@@ -20,8 +19,10 @@ func (provider *XfKernelProvider) Register(c framework.Container) framework.Cont
 }
 
 func (provider *XfKernelProvider) Boot(c framework.Container) error {
+	ginr := &framework.GinEngine{}
 	if provider.HttpEngine == nil {
-		provider.HttpEngine = gin.Default()
+		provider.HttpEngine = ginr.Defalut()
+
 	}
 	if provider.GrpcEngine == nil {
 		provider.GrpcEngine = grpc.NewServer()
